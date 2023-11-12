@@ -1,0 +1,20 @@
+openapi: 3.0.0
+
+info:
+  title: mtg-collector
+  description: mtg price checker
+  version: 0.0.1
+
+paths:
+  /healthz:
+    get:
+      summary: health check
+      description: health check endpoint.
+      responses:
+        '200':
+          description: Return OK
+          content:
+            text/html:
+              schema:
+                type: string
+                example: OK
