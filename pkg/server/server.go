@@ -19,6 +19,8 @@ func NewServer(port int) *Server {
 	}
 }
 
-func (s *Server) Start() error {
-	return s.app.Listen(s.port)
+func (s *Server) Start(errCh chan<- error) {
+	if err := s.app.Listen(s.port); err != nil {
+		errCh <- err
+	}
 }
