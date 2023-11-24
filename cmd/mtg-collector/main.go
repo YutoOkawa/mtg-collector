@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	server := server.NewServer(8080)
+	server := server.NewServer(8080, 1)
 	ctx, ctxCancel := signal.NotifyContext(context.Background(), syscall.SIGTERM, syscall.SIGINT)
 	defer ctxCancel()
 
@@ -21,7 +21,10 @@ func main() {
 		case err := <-srvErrCh:
 			fmt.Println(err)
 		case <-ctx.Done():
-			fmt.Println("Graceful shutdown")
+			if err := server.Shutdown(); err != nil {
+				// TODO: log 出力
+			}
+			return
 		}
 	}
 }
