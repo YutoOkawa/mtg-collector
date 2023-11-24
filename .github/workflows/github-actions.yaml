@@ -21,7 +21,7 @@ jobs:
           go-version: ${{ matrix.go-version }}
 
       - name: go install
-        run: go install
+        run: go install cmd/mtg-collector/main.go
 
       - name: Test
         run: make test
