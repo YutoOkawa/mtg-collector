@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	"fmt"
+	"mtg-collector/pkg/logger"
 	"mtg-collector/pkg/server"
 	"os/signal"
 	"syscall"
@@ -13,17 +13,23 @@ func main() {
 	ctx, ctxCancel := signal.NotifyContext(context.Background(), syscall.SIGTERM, syscall.SIGINT)
 	defer ctxCancel()
 
+	log := logger.GetLogger()
+
 	srvErrCh := make(chan error, 1)
 	go server.Start(srvErrCh)
 
 	for {
 		select {
 		case err := <-srvErrCh:
-			fmt.Println(err)
+			log.Error("failed to initialize server",
+				logger.String("err", err.Error()))
+			return
 		case <-ctx.Done():
 			if err := server.Shutdown(); err != nil {
-				// TODO: log 出力
+				log.Error("failed to shutdown server",
+					logger.String("err", err.Error()))
 			}
+			log.Info("shutdown")
 			return
 		}
 	}
