@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"errors"
 	"mtg-collector/pkg/model"
 )
 
@@ -15,5 +16,9 @@ func NewInMemoryCardRepository(cards []model.Card) GetCardRepository {
 }
 
 func (m *InMemoryRepository) GetCard(uniqueNumber int) (model.Card, error) {
-	return m.Cards[uniqueNumber], nil
+	if len(m.Cards) <= uniqueNumber {
+		return model.Card{}, errors.New("inputNumber exceeds the length of cards")
+	}
+	card := m.Cards[uniqueNumber]
+	return card, nil
 }

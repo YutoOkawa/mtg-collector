@@ -42,6 +42,13 @@ func TestGetCard(t *testing.T) {
 				},
 			},
 		},
+		{
+			name: "ShouldReturnErrorWhenIndexOutOfRange",
+
+			uniqueNumber: 1,
+
+			wantErr: true,
+		},
 	}
 
 	for _, c := range cases {
